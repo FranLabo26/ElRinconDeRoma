@@ -10,7 +10,8 @@
   <script src="motion.js"></script>
 </head>
 <body>
-  <div class="opening">
+  <main>
+  <div class="opening" data-scroll-panel>
   <div class="announcement">Un poquito de tela, un montón de amor <span>♡</span></div>
   <header>
     <a class="brand" href="#inicio" aria-label="El Rincón de Roma, inicio"><img src="a_close_up_well_composed_craft_embroidery_style_l.png" alt="Logo bordado de El Rincón de Roma con un perrito y flores"><span>El Rincón de <strong>Roma</strong></span></a>
@@ -21,8 +22,8 @@
       <div class="hero-art"><div class="orbit"></div><span class="petal petal-one">✳</span><div class="logo-frame"><img src="a_close_up_well_composed_craft_embroidery_style_l.png" alt="El Rincón de Roma: nuestro logo bordado"></div><div class="art-note">cada puntada,<br><em>un poquito de amor</em><span>♡</span></div><span class="petal petal-two">✧</span></div>
     </section>
   </div>
-  <main>
     <div class="values"><span>Hecho a mano</span><i>✧</i><span>Detalles que enamoran</span><i>✧</i><span>Con amor, de principio a fin</span></div>
+    <div class="scroll-panel" data-scroll-panel>
     <section class="catalog section" id="catalogo" aria-labelledby="creaciones-title">
       <div class="section-top"><div><p class="eyebrow">HECHAS DESPACITO, PARA DISFRUTAR MUCHO</p><h2 id="creaciones-title">Un poquito de amor<br>en <em>cada creación.</em></h2></div><p>Para vos, para tu casa,<br>para regalar un mimo.<br><span class="scroll-hint">Seguí descubriendo ↓</span></p></div>
       <div class="collection-preview"><span>♡</span> DETALLES QUE ABRAZAN · Creaciones de tela para tu hogar y una Navidad con encanto.</div>
@@ -40,8 +41,13 @@
       </div>
       <div class="collection-end"><span>♡</span><p>Siempre hay lugar para algo lindo más.</p><small>Vamos a ir sumando cada creación a este rincón.</small></div>
     </section>
+    </div>
+    <div class="scroll-panel" data-scroll-panel>
     <section class="story section" id="historia"><div class="story-decoration" aria-hidden="true"><span>♡</span><div>tela, hilos<br>y mucho <em>amor.</em></div><small>EL RINCÓN DE ROMA</small></div><div class="story-copy"><p class="eyebrow">BIENVENIDA A NUESTRO RINCÓN</p><h2>Lo lindo de lo<br><em>hecho a mano.</em></h2><p>El Rincón de Roma nace de las ganas de crear cosas lindas con las manos. De elegir una tela, combinar colores y ver cómo, puntada a puntada, algo empieza a tomar forma.</p><p>Un emprendimiento de costura con una idea sencilla: poner cariño en los detalles y compartirlo en cada creación.</p><span class="signature">Con amor, El Rincón de Roma ♡</span></div></section>
+    </div>
+    <div class="scroll-panel" data-scroll-panel>
     <section class="contact section" id="contacto"><span class="contact-flower" aria-hidden="true">✳</span><p class="eyebrow">SIGAMOS EN CONTACTO</p><h2>Algo lindo está <em>por venir.</em></h2><p>Estamos dando las primeras puntadas de este rincón.<br>Pronto sumaremos nuestros medios de contacto para que puedas consultar y hacer tu pedido.</p><a href="#catalogo" class="text-link">Mientras tanto, conocé el catálogo <span>↑</span></a></section>
+    </div>
   </main>
   <footer><a class="footer-brand" href="#inicio">El Rincón de <em>Roma</em></a><p>Hecho a mano. Hecho con amor.</p><span>♡</span></footer>
   <dialog id="product-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-description">
@@ -49,5 +55,6 @@
     <div class="dialog-layout"><div class="dialog-photo"><button class="dialog-arrow dialog-prev" type="button" aria-label="Ver producto anterior">‹</button><button class="dialog-arrow dialog-next" type="button" aria-label="Ver producto siguiente">›</button><span id="dialog-counter" class="dialog-counter" aria-live="polite" aria-atomic="true"></span><img id="dialog-image" src="assets/productos/arbolito-navideno.webp" alt="" width="1024" height="1536"></div><div class="dialog-copy"><p class="eyebrow">EL RINCÓN DE ROMA · HECHO CON AMOR</p><h2 id="dialog-title"></h2><p id="dialog-description"></p><a class="button dialog-contact" href="#contacto">Me interesa esta creación <span>↗</span></a></div></div>
   </dialog>
   <script src="products.js" defer></script>
+  <script src="scroll-panels.js" defer></script>
 </body>
 </html>
