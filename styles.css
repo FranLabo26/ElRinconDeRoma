@@ -27,3 +27,8 @@
  .art-note{bottom:8px;font-size:20px}
 }
 @media(max-width:900px){.art-note{bottom:16px}}
+
+/* Opening sequence: the logo settles before the text slides into view. */
+.opening{overflow-x:clip}
+.motion-preparing .logo-frame,.motion-preparing .announcement,.motion-preparing .brand>span,.motion-preparing header nav,.motion-preparing .hero-copy>*,.motion-preparing .art-note{opacity:0}
+@media(prefers-reduced-motion:reduce){.motion-preparing .logo-frame,.motion-preparing .announcement,.motion-preparing .brand>span,.motion-preparing header nav,.motion-preparing .hero-copy>*,.motion-preparing .art-note{opacity:1}}
