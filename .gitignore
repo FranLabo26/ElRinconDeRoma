@@ -1,0 +1,9 @@
+node_modules/
+dist/
+el-rincon-de-roma-cloudflare.zip
+.wrangler/
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
