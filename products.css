@@ -136,3 +136,10 @@ body::before,body::after{width:16px;opacity:.23;background-size:65px 520px}
 
 @media(min-width:601px){.tile-12{grid-row:11 / span 2}.tile-14{grid-column:2;grid-row:13 / span 2}}
 @media(max-width:600px){.tile-14{height:330px;width:94%;align-self:flex-end}}
+
+@media(min-width:601px){
+ .product-mosaic{grid-template-rows:repeat(16,minmax(0,1fr));height:clamp(3000px,440svh,4400px)}
+ .tile-14{grid-row:13 / span 4}
+ .tile-15{grid-column:1;grid-row:15 / span 2}
+}
+@media(max-width:600px){.tile-15{height:400px;width:96%}}
