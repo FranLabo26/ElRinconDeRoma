@@ -4,6 +4,7 @@ const scene = productDialog.querySelector('.carousel-scene');
 const center = scene.querySelector('.carousel-card');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 let lastProduct, currentProduct = 0, moving = false, animations = [];
+let animationSession = 0;
 const wrap = index => (index + productTiles.length) % productTiles.length;
 const cards = [-2, -1, 0, 1, 2].map(slot => {
   const card = slot === 0 ? center : center.cloneNode(true);
@@ -75,6 +76,7 @@ function render(index) {
 async function navigate(direction) {
   if (moving || !productDialog.open) return;
   moving = true;
+  const session = animationSession;
   const step = center.getBoundingClientRect().width + 24;
   if (!reducedMotion.matches) {
     animations = cards.map(card => {
@@ -87,6 +89,7 @@ async function navigate(direction) {
     });
     await Promise.allSettled(animations.map(animation => animation.finished));
   }
+  if (session !== animationSession) return;
   if (productDialog.open) render(currentProduct + direction);
   animations.forEach(animation => animation.cancel());
   animations = [];
@@ -96,6 +99,7 @@ let openingAnimations = [];
 async function animateOpening(tile, origin) {
   if (reducedMotion.matches) return;
   moving = true;
+  const session = animationSession;
   const destination = center.getBoundingClientRect();
   const dx = origin.left - destination.left;
   const dy = origin.top - destination.top;
@@ -113,11 +117,13 @@ async function animateOpening(tile, origin) {
     ...[...productDialog.querySelectorAll('.dialog-arrow, .dialog-close')].map(control => control.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 350, delay: 550, fill: 'backwards' }))
   ];
   await Promise.allSettled(openingAnimations.map(animation => animation.finished));
+  if (session !== animationSession) return;
   openingAnimations.forEach(animation => animation.cancel());
   openingAnimations = [];
   moving = false;
 }
 productTiles.forEach((tile, index) => tile.addEventListener('click', () => {
+  animationSession++;
   const origin = tile.querySelector('img').getBoundingClientRect();
   lastProduct = tile;
   render(index);
@@ -145,10 +151,15 @@ scene.addEventListener('touchend', event => {
 productDialog.querySelector('.dialog-close').addEventListener('click', () => productDialog.close());
 scene.addEventListener('click', event => { if (event.target === scene) productDialog.close(); });
 productDialog.addEventListener('close', () => {
-  openingAnimations.forEach(animation => animation.cancel());
-  openingPhoto?.remove();
-  animations.forEach(animation => animation.cancel());
+  // Release scrolling before cleaning up any animation.
   document.documentElement.classList.remove('product-open');
+  animationSession++;
+  const pending = [...openingAnimations, ...animations];
+  openingAnimations = [];
+  animations = [];
+  moving = false;
+  touch = null;
+  pending.forEach(animation => animation.cancel());
   lastProduct?.focus({ preventScroll: true });
 });
 center.querySelector('.dialog-contact').addEventListener('click', () => productDialog.close());
