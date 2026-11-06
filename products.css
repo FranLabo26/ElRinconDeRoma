@@ -170,3 +170,6 @@ body::before,body::after{width:16px;opacity:.23;background-size:65px 520px}
 
 @media(min-width:601px){.tile-20{grid-row:19 / span 2}.tile-22{grid-column:2;grid-row:21 / span 2}}
 @media(max-width:600px){.tile-22{height:330px;width:94%;align-self:flex-end}}
+
+@media(min-width:601px){.product-mosaic{grid-template-rows:repeat(24,minmax(0,1fr));height:clamp(4500px,660svh,6600px)}.tile-22{grid-row:21 / span 4}.tile-23{grid-column:1;grid-row:23 / span 2}}
+@media(max-width:600px){.tile-23{height:420px;width:96%}}
