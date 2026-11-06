@@ -92,48 +92,29 @@ async function navigate(direction) {
   animations = [];
   moving = false;
 }
-let openingAnimations = [], openingPhoto;
+let openingAnimations = [];
 async function animateOpening(tile, origin) {
   if (reducedMotion.matches) return;
   moving = true;
-  const image = center.querySelector('.dialog-photo img');
-  const destination = image.getBoundingClientRect();
-  const ghost = image.cloneNode();
-  ghost.removeAttribute('id');
-  ghost.alt = '';
-  ghost.className = 'product-opening-photo';
-  ghost.setAttribute('aria-hidden', 'true');
-  Object.assign(ghost.style, { left: `${destination.left}px`, top: `${destination.top}px`, width: `${destination.width}px`, height: `${destination.height}px` });
-  productDialog.append(ghost);
-  openingPhoto = ghost;
-  const options = { duration: 850, easing: 'cubic-bezier(.22,1,.36,1)' };
+  const destination = center.getBoundingClientRect();
+  const dx = origin.left - destination.left;
+  const dy = origin.top - destination.top;
+  const sx = origin.width / destination.width;
+  const sy = origin.height / destination.height;
+  // The image, card background and description share exactly one transform.
   openingAnimations = [
-    ghost.animate([
-      { left: `${origin.left}px`, top: `${origin.top}px`, width: `${origin.width}px`, height: `${origin.height}px`, opacity: .8 },
-      { left: `${destination.left}px`, top: `${destination.top}px`, width: `${destination.width}px`, height: `${destination.height}px`, opacity: 1 }
-    ], options),
-    image.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 250, delay: 650, fill: 'backwards' }),
-    center.querySelector('.dialog-copy').animate([
-      { opacity: 0, transform: 'translateY(-28px)' },
-      { opacity: 1, transform: 'translateY(0)' }
-    ], { ...options, duration: 700, delay: 350, fill: 'backwards' }),
+    center.animate([
+      { transformOrigin: 'top left', transform: `translateX(-50%) translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`, opacity: .85 },
+      { transformOrigin: 'top left', transform: 'translateX(-50%) translate(0, 0) scale(1)', opacity: 1 }
+    ], { duration: 900, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' }),
     ...cards.filter(card => card !== center).map(card => card.animate([
-      { opacity: 0, translate: '0 55px' },
-      { opacity: .6, translate: '0 0' }
-    ], { ...options, delay: 200, fill: 'backwards' })),
-    ...productTiles.filter(other => other !== tile).filter(other => {
-      const box = other.getBoundingClientRect();
-      return box.bottom > 0 && box.top < innerHeight;
-    }).map((other, position) => other.animate([
-      { opacity: 1, transform: 'translateY(0) scale(1)' },
-      { opacity: 0, transform: 'translateY(80px) scale(.96)' }
-    ], { ...options, delay: position * 35, fill: 'forwards' }))
+      { opacity: 0 }, { opacity: .6 }
+    ], { duration: 400, delay: 550, fill: 'backwards' })),
+    ...[...productDialog.querySelectorAll('.dialog-arrow, .dialog-close')].map(control => control.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 350, delay: 550, fill: 'backwards' }))
   ];
   await Promise.allSettled(openingAnimations.map(animation => animation.finished));
-  ghost.remove();
   openingAnimations.forEach(animation => animation.cancel());
   openingAnimations = [];
-  openingPhoto = null;
   moving = false;
 }
 productTiles.forEach((tile, index) => tile.addEventListener('click', () => {
