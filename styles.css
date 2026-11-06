@@ -33,19 +33,11 @@
 .motion-preparing .logo-frame,.motion-preparing .announcement,.motion-preparing .brand>span,.motion-preparing header nav,.motion-preparing .hero-copy>*,.motion-preparing .art-note{opacity:0}
 @media(prefers-reduced-motion:reduce){.motion-preparing .logo-frame,.motion-preparing .announcement,.motion-preparing .brand>span,.motion-preparing header nav,.motion-preparing .hero-copy>*,.motion-preparing .art-note{opacity:1}}
 
-/* Native pinned panels: the next section covers the previous one on scroll. */
+/* Guided sections remain in normal document flow. */
 [data-scroll-panel]{position:relative;background-color:var(--cream)}
 .scroll-panel{min-height:100svh;display:flow-root}
 .scroll-panel:has(#historia){display:flex;align-items:center;background:#f1f0e6}
 .scroll-panel:has(#contacto){display:flex;align-items:center;background:#f2e7e0}
 .scroll-panel>.section{width:100%}
-.stacked-scroll [data-scroll-panel]{position:sticky;top:var(--panel-top,0px);box-shadow:0 -16px 36px #5542380a}
-.opening[data-scroll-panel]{z-index:1;background-color:var(--cream)}
-.values{position:relative;z-index:2}
-.scroll-panel:has(#catalogo){z-index:2}
-.scroll-panel:has(#historia){z-index:3}
-.scroll-panel:has(#contacto){z-index:4}
-footer{position:relative;z-index:5;background:var(--cream)}
 [data-scroll-panel]{background-image:url('assets/costura.svg'),url('assets/costura.svg');background-repeat:repeat-y;background-position:left top,right 230px;background-size:clamp(20px,7vw,130px) 660px}
 @media(max-width:600px){[data-scroll-panel]{background-size:16px 520px}.scroll-panel:has(#historia){padding-top:25px;padding-bottom:25px}}
-@media(prefers-reduced-motion:reduce){.stacked-scroll [data-scroll-panel]{position:relative;top:auto;box-shadow:none}}
