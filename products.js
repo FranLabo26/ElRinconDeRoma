@@ -32,6 +32,43 @@ function render(index) {
     card.querySelector('h2').textContent = tile.querySelector('.tile-title').innerText;
     card.querySelector('.dialog-copy > p:not(.eyebrow)').textContent = tile.querySelector('.product-description').textContent;
     card.querySelector('.dialog-counter').textContent = `${wrap(currentProduct + slot) + 1} / ${productTiles.length}`;
+    let views = card.querySelector('.product-views');
+    if (!views) {
+      views = document.createElement('div');
+      views.className = 'product-views';
+      views.setAttribute('role', 'group');
+      views.setAttribute('aria-label', 'Fotos del producto');
+      card.querySelector('.dialog-copy').insertBefore(views, card.querySelector('.dialog-contact'));
+    }
+    views.replaceChildren();
+    if (slot === 0 && tile.dataset.extraImage) {
+      const photos = [
+        { src: source.getAttribute('src'), alt: source.alt, label: 'Exterior' },
+        { src: tile.dataset.extraImage, alt: tile.dataset.extraAlt, label: 'Interior' }
+      ];
+      photos.forEach((photo, index) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'product-view';
+        button.setAttribute('aria-pressed', String(index === 0));
+        button.setAttribute('aria-label', `Ver ${photo.label.toLowerCase()} del producto`);
+        const thumbnail = document.createElement('img');
+        thumbnail.src = photo.src;
+        thumbnail.alt = '';
+        button.append(thumbnail, document.createTextNode(photo.label));
+        button.addEventListener('click', () => {
+          if (moving || button.getAttribute('aria-pressed') === 'true') return;
+          views.querySelectorAll('button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+          image.src = photo.src;
+          image.alt = photo.alt;
+          if (!reducedMotion.matches) image.animate([
+            { opacity: .3, transform: `translateX(${index === 0 ? -18 : 18}px)` },
+            { opacity: 1, transform: 'translateX(0)' }
+          ], { duration: 550, easing: 'cubic-bezier(.22,1,.36,1)' });
+        });
+        views.append(button);
+      });
+    }
     card.scrollTop = 0;
   });
 }
