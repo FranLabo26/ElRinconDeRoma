@@ -179,3 +179,6 @@ body::before,body::after{width:16px;opacity:.23;background-size:65px 520px}
 
 @media(min-width:601px){.product-mosaic{grid-template-rows:repeat(26,minmax(0,1fr));height:clamp(4875px,715svh,7150px)}.tile-25{grid-column:1;grid-row:25 / span 2}.tile-26{grid-column:2;grid-row:25 / span 2}}
 @media(max-width:600px){.tile-25{height:460px;width:96%}.tile-26{height:460px;width:94%;align-self:flex-end}}
+
+@media(min-width:601px){.product-mosaic{grid-template-rows:repeat(28,minmax(0,1fr));height:clamp(5250px,770svh,7700px)}.tile-26{grid-row:25 / span 4}.tile-27{grid-column:1;grid-row:27 / span 2}}
+@media(max-width:600px){.tile-27{height:350px;width:96%}}
