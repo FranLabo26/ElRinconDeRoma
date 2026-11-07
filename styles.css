@@ -96,3 +96,36 @@
  .hero-copy .intro{font-size:12px;line-height:1.7;margin:12px 0 16px}
  .hero-copy .handmade{font-size:10px;margin-top:12px}
 }
+
+/* Fit the complete welcome composition to narrow viewports, including short windows. */
+@media(max-width:900px){
+ .opening{min-height:100svh}
+ .opening .announcement{flex:none;padding:8px 10px;font-size:9px;line-height:1.4}
+ .opening header{flex:none;display:flex;flex-direction:column;gap:8px;padding:10px 18px}
+ .opening .brand{font-size:clamp(22px,4vw,28px);gap:10px}
+ .opening .brand img{width:40px;height:40px}
+ .opening header nav{display:flex;justify-content:center;width:100%;gap:clamp(14px,4vw,26px);font-size:12px}
+ .opening header nav a:nth-child(2){display:block}
+ .opening .nav-contact{padding:8px 15px}
+ .opening .hero{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:12px 22px 18px}
+ .opening .hero-art{order:-1;flex:none;width:100%;max-width:310px;height:clamp(130px,24svh,210px);min-height:0;margin:0 auto}
+ .opening .logo-frame{width:clamp(110px,21svh,180px);height:clamp(110px,21svh,180px);padding:7px;flex:none}
+ .opening .orbit{width:clamp(124px,23svh,198px);height:clamp(124px,23svh,198px)}
+ .opening .art-note{font-size:14px;padding:7px 11px;bottom:0;right:0}
+ .opening .art-note span{font-size:25px;top:-11px}
+ .opening .petal{font-size:25px}
+ .opening .hero-copy{width:100%;text-align:center}
+ .opening .hero-copy .eyebrow{font-size:9px;line-height:1.5;letter-spacing:2px;margin:0 0 7px}
+ .opening .hero-copy h1{font-size:clamp(29px,5svh,44px);line-height:1;letter-spacing:-1px;margin:8px 0 12px}
+ .opening .hero-copy .intro{font-size:12px;line-height:1.65;margin:10px 0 13px}
+ .opening .hero-copy>.button{font-size:12px;padding:13px 22px}
+ .opening .handmade{font-size:10px;margin-top:10px}
+ .opening .handmade span{font-size:16px}
+}
+@media(max-width:900px) and (max-height:600px){
+ .opening .hero{flex-direction:row;gap:20px;padding:15px 22px}
+ .opening .hero-art{width:35%;max-width:230px;height:180px;margin:0}
+ .opening .hero-copy{width:60%}
+ .opening .hero-copy h1{font-size:29px}
+ .opening .art-note{font-size:12px;right:-10px}
+}
