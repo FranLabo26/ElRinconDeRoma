@@ -79,3 +79,20 @@
  .contact>p:not(.eyebrow){font-size:13px;line-height:1.8}
  .text-link{font-size:12px}footer{gap:14px;padding:25px 22px}
 }
+
+/* Keep the mobile emblem and welcome copy in one compact composition. */
+@media(max-width:600px){
+ .opening{min-height:100svh;overflow:visible}
+ .opening .hero{flex:0 0 auto;display:flex;flex-direction:column;gap:12px;padding:18px 24px 36px}
+ .hero-art{order:-1;flex:none;min-height:210px;height:210px;max-width:320px;margin:0 auto 5px}
+ .logo-frame{width:180px;height:180px;padding:8px;flex:none}
+ .orbit{width:198px;height:198px}
+ .art-note{font-size:15px;right:0;bottom:0;padding:8px 13px}
+ .art-note span{font-size:26px;top:-11px}
+ .petal-one{font-size:25px;top:8px}.petal-two{font-size:25px;bottom:12px}
+ .hero-copy{text-align:center}
+ .hero-copy .eyebrow{font-size:9px;letter-spacing:2px;margin-bottom:8px}
+ .hero-copy h1{font-size:clamp(38px,10.8vw,48px);margin:10px 0 14px;line-height:1}
+ .hero-copy .intro{font-size:12px;line-height:1.7;margin:12px 0 16px}
+ .hero-copy .handmade{font-size:10px;margin-top:12px}
+}
