@@ -19,6 +19,11 @@ const cards = [-2, -1, 0, 1, 2].map(slot => {
   scene.append(card);
   return card;
 });
+function updateCardCopy(card, tile) {
+  card.querySelector('h2').textContent = tile.querySelector('.tile-title').innerText;
+  card.querySelector('.dialog-copy > p:not(.eyebrow)').textContent = tile.querySelector('.product-description').textContent;
+  window.RomaCatalog?.metadata(tile, card.querySelector('.dialog-copy'));
+}
 function render(index) {
   currentProduct = wrap(index);
   cards.forEach(card => {
@@ -30,8 +35,7 @@ function render(index) {
     image.alt = source.alt;
     image.width = source.getAttribute('width');
     image.height = source.getAttribute('height');
-    card.querySelector('h2').textContent = tile.querySelector('.tile-title').innerText;
-    card.querySelector('.dialog-copy > p:not(.eyebrow)').textContent = tile.querySelector('.product-description').textContent;
+    updateCardCopy(card, tile);
     card.querySelector('.dialog-counter').textContent = `${wrap(currentProduct + slot) + 1} / ${productTiles.length}`;
     let views = card.querySelector('.product-views');
     if (!views) {
@@ -163,3 +167,6 @@ productDialog.addEventListener('close', () => {
   lastProduct?.focus({ preventScroll: true });
 });
 center.querySelector('.dialog-contact').addEventListener('click', () => productDialog.close());
+document.addEventListener('catalog-updated', () => {
+  if (productDialog.open) cards.forEach(card => updateCardCopy(card, productTiles[wrap(currentProduct + Number(card.dataset.slot))]));
+});

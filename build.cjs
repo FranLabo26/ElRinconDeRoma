@@ -3,7 +3,7 @@ const path = require('node:path');
 const root = __dirname;
 const out = path.join(root, 'dist');
 // Copy only public assets; never include the local server or project files.
-const files = ['index.html', 'styles.css', 'products.css', 'products.js', 'motion.js', 'scroll-panels.js', 'a_close_up_well_composed_craft_embroidery_style_l.png', '_headers'];
+const files = ['index.html', 'styles.css', 'products.css', 'products.js', 'catalog-live.js', 'motion.js', 'scroll-panels.js', 'a_close_up_well_composed_craft_embroidery_style_l.png', '_headers'];
 fs.mkdirSync(out, { recursive: true });
 for (const file of files) fs.copyFileSync(path.join(root, file), path.join(out, file));
 fs.cpSync(path.join(root, 'assets'), path.join(out, 'assets'), { recursive: true });

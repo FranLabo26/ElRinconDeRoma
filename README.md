@@ -1,63 +1,43 @@
 # El Rincón de Roma
 
-Web estática, preparada para Cloudflare Pages. No necesita servidor Node en el hosting, base de datos ni instalar dependencias.
+Catálogo con fotos agrupadas por familia y precios/disponibilidad editables desde Google Sheets.
 
-## Subir directamente a Cloudflare Pages
+## Editar productos sin deploy
 
-1. Entrar al panel de Cloudflare → Workers & Pages → Create application → Pages → Use direct upload.
-2. Elegir un nombre para el proyecto, por ejemplo `el-rincon-de-roma`.
-3. Subir `el-rincon-de-roma-cloudflare.zip` o arrastrar la carpeta `dist`.
-4. Publicar. Cloudflare mostrará la dirección de la web.
+Planilla: https://docs.google.com/spreadsheets/d/1IZuo1xfbxESJ5Zc_Gal3VxasJ7apZxB51bvKCOL7lfw/edit
 
-El ZIP tiene `index.html` en la raíz. Subir solamente el ZIP o `dist`, no la carpeta completa del proyecto.
+La pestaña Productos tiene 29 filas vinculadas por ID a las fotos. No cambiar los identificadores ni los encabezados; se pueden ordenar las filas completas.
 
-Guía oficial: https://developers.cloudflare.com/pages/get-started/direct-upload/
+- Nombre: nombre visible. Separar el subtítulo con ` · ` para conservar la segunda línea en cursiva.
+- Tipo: referencia para administrar la planilla. Cambiar este campo no mueve la foto a otra familia; el diseño conserva los grupos existentes.
+- Precio: importe numérico en pesos argentinos (12500 o 12500,50). Vacío o inválido muestra Consultar precio. Un cero explícito se muestra como $0.
+- Descripcion: texto que aparece al abrir la foto.
+- Disponibilidad: Disponible, A pedido, Sin stock o Consultar. Los productos sin stock siguen visibles. Vacío o desconocido muestra Consultar disponibilidad.
 
-## Si se conecta un repositorio Git a Pages
+Solo la pestaña Productos está publicada como CSV. Su contenido es público; editar requiere acceso a la cuenta de Google. Mantener habilitada la republicación automática de cambios. La pestaña Como editar contiene instrucciones.
 
-- Framework: None.
-- Comando de compilación: `npm run build`.
-- Directorio de salida: `dist`.
-- Directorio raíz: el del proyecto.
+La web consulta /api/catalogo al cargar, cada 2 minutos mientras está visible y al volver a la pestaña tras un minuto. Google puede demorar unos minutos en reflejar los cambios. Si la hoja no está disponible, conserva fotos y descripciones originales y vuelve a Consultar precio/disponibilidad; no guarda precios viejos en el navegador.
 
-## Actualizar la web
+Agregar una fila sola no agrega una foto: nuevas imágenes, productos y cambios de diseño requieren actualizar el código. Modificar precio, disponibilidad, nombre o descripción de productos existentes no requiere deploy.
 
-Editar los archivos originales de esta carpeta y ejecutar:
+## Cloudflare Workers
 
-```powershell
-npm run build
-Compress-Archive -Path .\dist\* -DestinationPath .\el-rincon-de-roma-cloudflare.zip -Force
-```
+Producción conectada al repositorio, rama main. Build: `npm run build`. Deploy: `npx wrangler deploy`. Worker: nameless-mountain-48e1.
 
-Luego crear una nueva implementación en el mismo proyecto de Cloudflare y subir el ZIP actualizado. No editar `dist` directamente: se genera desde los originales. Las fotos de `assets` se incluyen automáticamente en la compilación.
+worker.mjs sirve /api/catalogo y delega los archivos públicos de dist al binding ASSETS. catalog-source.mjs lee el CSV público, valida filas e importes. No usa claves ni credenciales de Google. El enlace publicado se configura en ese archivo.
 
-## Ver localmente
+Esta versión necesita el Worker. Subir solo dist o el antiguo ZIP estático no instala /api/catalogo. El deploy desde Git incluye tanto el Worker como los archivos públicos. No editar dist directamente.
 
-```powershell
-npm run dev
-```
+Referencia: https://developers.cloudflare.com/workers/static-assets/routing/worker-script/
 
-Abrir http://localhost:3000. Si el servidor ya está funcionando, no hace falta iniciarlo otra vez.
+## Vista local y verificación
 
-## Estado del contenido
+`npm run dev` → http://localhost:3000
 
-El catálogo incluye tres creaciones navideñas con fotos. Los nombres son de presentación y se pueden ajustar. Faltan precios y el medio de contacto para tomar pedidos. La página puede publicarse tal como está; no tiene pagos ni pedidos habilitados. Las tipografías se cargan desde Google Fonts, con alternativas locales si no están disponibles.
+`npm test` valida CSV, importes, estados, IDs repetidos, errores de Google y archivos estáticos.
 
+`npm run build` y `npx wrangler deploy --dry-run` verifican la compilación y el paquete del Worker.
 
-## Publicación automática desde GitHub (Worker existente)
+El servidor local reproduce el endpoint de Google Sheets. Reiniciarlo después de modificar server.cjs.
 
-La configuración `wrangler.jsonc` apunta a `nameless-mountain-48e1`, el Worker que aparecía vinculado al dominio de Roma. Confirmar que ese siga siendo el nombre del proyecto en Cloudflare antes de conectar.
-
-En ese mismo Worker, abrir Settings → Builds → Connect y seleccionar el repositorio de esta web:
-
-- Rama de producción: `main`.
-- Directorio raíz: `/`.
-- Comando de build: `npm run build`.
-- Comando de deploy: `npx wrangler deploy`.
-- Activar los despliegues automáticos de la rama de producción.
-
-Cloudflare compila `dist` desde los archivos originales. No se suben `dist`, ZIPs ni credenciales a Git. El servidor `server.cjs` se usa solamente para la vista local.
-
-Después de conectar, ejecutar el primer build y comprobar que la versión publicada muestre los diez productos y las flechas del carrusel. Los siguientes pushes a `main` dispararán el deploy automáticamente.
-
-Documentación: https://developers.cloudflare.com/workers/ci-cd/builds/
+La planilla parte con precios vacíos y disponibilidad Consultar. Completar con los datos reales.
