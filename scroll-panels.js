@@ -1,4 +1,6 @@
 (() => {
+  // Touch scrolling keeps its native momentum; the reveals are handled by motion.js.
+  if (!matchMedia('(min-width: 901px) and (pointer: fine)').matches) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let idle, frame, guiding = false, touching = false, anchorUntil = 0;
   const blocked = () => reduced.matches || touching || document.hidden || !!document.querySelector('dialog[open]');

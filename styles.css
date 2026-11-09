@@ -133,3 +133,18 @@
 .contact-whatsapp{justify-content:center;gap:0;margin-top:4px}.contact-phone{display:block;width:fit-content;margin:18px auto 0;font-size:13px;color:var(--ink);letter-spacing:.5px}.contact-phone:hover{text-decoration:underline;text-underline-offset:4px}
 
 .developer-credit{display:flex;align-items:center;justify-content:center;gap:5px;width:fit-content;margin:0 auto 16px;padding:3px 6px;color:var(--muted);font-size:9px;line-height:1.4;opacity:.75}.developer-credit img{display:block;width:16px;height:16px;object-fit:contain}.developer-credit:hover{opacity:1;color:var(--ink)}
+
+/* Contact, footer and studio signature share the final screen. */
+.scroll-panel:has(#contacto){display:flex;flex-direction:column;align-items:stretch;min-height:100svh;padding-bottom:0}
+.scroll-panel:has(#contacto) .contact{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 24px}
+.scroll-panel:has(#contacto) footer{width:100%;padding:20px 40px;flex:none}
+.scroll-panel:has(#contacto) .developer-credit{flex:none;font-size:13px;gap:8px;margin:0 auto 20px;padding:5px 10px;color:var(--ink);opacity:.9}
+.developer-credit img{width:26px;height:26px}
+@media(max-width:600px){
+ .scroll-panel:has(#contacto) .contact{padding:26px 22px}
+ .scroll-panel:has(#contacto) .contact h2{font-size:34px}
+ .scroll-panel:has(#contacto) .contact>p:not(.eyebrow){font-size:12px;line-height:1.7;margin:18px auto}
+ .scroll-panel:has(#contacto) .contact-flower{font-size:28px}
+ .scroll-panel:has(#contacto) footer{padding:16px 22px;justify-content:center;text-align:center;gap:8px 16px}
+ .scroll-panel:has(#contacto) .developer-credit{font-size:12px;margin-bottom:16px}
+}
