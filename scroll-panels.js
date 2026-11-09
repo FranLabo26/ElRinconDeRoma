@@ -1,6 +1,5 @@
 (() => {
-  // Touch scrolling keeps its native momentum; the reveals are handled by motion.js.
-  if (!matchMedia('(min-width: 901px) and (pointer: fine)').matches) return;
+  const desktop = matchMedia('(min-width: 901px) and (pointer: fine)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let idle, frame, guiding = false, touching = false, anchorUntil = 0;
   const blocked = () => reduced.matches || touching || document.hidden || !!document.querySelector('dialog[open]');
@@ -44,7 +43,7 @@
   }
   function schedule() {
     clearTimeout(idle);
-    if (!guiding && !blocked()) idle = setTimeout(settle, 240);
+    if (desktop.matches && !guiding && !blocked()) idle = setTimeout(settle, 240);
   }
   window.addEventListener('scroll', () => { if (!guiding) { direction = scrollY >= previousY ? 1 : -1; } previousY = scrollY; if (scrollY >= catalogTop() - 2) introComplete = true; if (scrollY <= 2 && !guiding) introComplete = false; schedule(); }, { passive: true });
   window.addEventListener('wheel', event => {
@@ -57,9 +56,32 @@
     } else cancel();
   }, { passive: false });
   window.addEventListener('pointerdown', cancel, { passive: true });
-  window.addEventListener('touchstart', () => { touching = true; cancel(); }, { passive: true });
-  window.addEventListener('touchend', () => { touching = false; schedule(); }, { passive: true });
-  window.addEventListener('touchcancel', () => { touching = false; cancel(); }, { passive: true });
+  let swipe;
+  window.addEventListener('touchstart', event => {
+    touching = true; cancel();
+    swipe = event.touches.length === 1 ? {
+      x:event.touches[0].clientX, y:event.touches[0].clientY,
+      fromIntro:!introComplete && scrollY < catalogTop() - 2 && !reduced.matches && !document.querySelector('dialog[open]')
+    } : null;
+  }, { passive:true });
+  // Only the first downward swipe is guided. All later touch scrolling is native.
+  window.addEventListener('touchmove', event => {
+    if (!swipe?.fromIntro || event.touches.length !== 1) return;
+    const dy = swipe.y - event.touches[0].clientY;
+    const dx = swipe.x - event.touches[0].clientX;
+    if (dy > 24 && dy > Math.abs(dx) * 1.5 && event.cancelable) event.preventDefault();
+  }, { passive:false });
+  window.addEventListener('touchend', event => {
+    touching = false;
+    const end = event.changedTouches[0];
+    const dy = swipe && end ? swipe.y - end.clientY : 0;
+    const dx = swipe && end ? swipe.x - end.clientX : 0;
+    if (swipe?.fromIntro && dy > 36 && dy > Math.abs(dx) * 1.5 && scrollY < catalogTop() - 2) {
+      direction = 1; moveTo(catalogTop());
+    } else schedule();
+    swipe = null;
+  }, { passive:true });
+  window.addEventListener('touchcancel', () => { touching = false; swipe = null; cancel(); }, { passive:true });
   window.addEventListener('keydown', cancel);
   document.addEventListener('click', event => {
     if (event.target.closest('a[href^="#"]')) { cancel(); anchorUntil = Date.now() + 1400; }
