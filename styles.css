@@ -129,3 +129,7 @@
  .opening .hero-copy h1{font-size:29px}
  .opening .art-note{font-size:12px;right:-10px}
 }
+
+.contact-whatsapp{justify-content:center;gap:0;margin-top:4px}.contact-phone{display:block;width:fit-content;margin:18px auto 0;font-size:13px;color:var(--ink);letter-spacing:.5px}.contact-phone:hover{text-decoration:underline;text-underline-offset:4px}
+
+.developer-credit{display:flex;align-items:center;justify-content:center;gap:5px;width:fit-content;margin:0 auto 16px;padding:3px 6px;color:var(--muted);font-size:9px;line-height:1.4;opacity:.75}.developer-credit img{display:block;width:16px;height:16px;object-fit:contain}.developer-credit:hover{opacity:1;color:var(--ink)}

@@ -20,7 +20,15 @@ const cards = [-2, -1, 0, 1, 2].map(slot => {
   return card;
 });
 function updateCardCopy(card, tile) {
-  card.querySelector('h2').textContent = tile.querySelector('.tile-title').innerText;
+  const title = tile.querySelector('.tile-title').innerText;
+  card.querySelector('h2').textContent = title;
+  const productName = title.replace(/\s*\n\s*/g, ' · ').trim();
+  const message = `¡Hola! ¿Cómo estás? Me interesa el producto "${productName}" que vi en El Rincón de Roma. ¿Me pasás más información? ¡Gracias!`;
+  const contact = card.querySelector('.dialog-contact');
+  contact.href = `https://wa.me/5492281300575?text=${encodeURIComponent(message)}`;
+  contact.target = '_blank';
+  contact.rel = 'noopener noreferrer';
+  contact.setAttribute('aria-label', `Consultar por ${productName} en WhatsApp (abre una nueva pestaña)`);
   card.querySelector('.dialog-copy > p:not(.eyebrow)').textContent = tile.querySelector('.product-description').textContent;
   window.RomaCatalog?.metadata(tile, card.querySelector('.dialog-copy'));
 }
